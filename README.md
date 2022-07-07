@@ -1,4 +1,4 @@
-- 👋 Hi, I’m @midhunmdrs
+- 👋 Hi, I’m @midhun
 - 👀 I’m interested in BackEnd Development
 - 🌱 I’m currently learning JavaScript , python , Backend node.js
 - 💞️ I’m looking to collaborate on ...
