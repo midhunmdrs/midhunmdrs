@@ -1,0 +1,132 @@
+composer create-project laravel/laravel example-app;
+
+php artisan serve
+
+git init
+
+git add .
+
+create github repository
+
+then in vsc:
+1. git remote add origin       git@github.com:midhunmdrs/laravel10midhun.git
+
+2. git branch -M main
+
+3. git branch -U main
+3. git push -u origin main
+
+4. for authencation use breeze package
+composer require laravel/breeze --dev
+php artisan breeze:install
+php artisan migrate
+
+to update table after migrations use the command
+5.   php artisan make migration update_user_table_column_user_to_username --table=users
+in new migration in up()
+$table->renmaeColunm(oldvalue,newvalue) viceversa in down();
+php artisan migrate
+
+eloquent model:
+ $users = User::get('name');
+
+go to mutation in docs
+eloquent model
+ACCESSOR
+protected function "column_name"():Attribute
+{
+return Atribute::make(
+get:fn($value) =>strtoupper($value)
+);
+MUTATOR
+
+protected function "column_name"():Attribute
+{
+return Atribute::make(
+set:fn($value) =>strtoupper($value) || Str::upper($value)
+);
+
+php artisan tinker
+app()->will give info about enviroment
+$user = User::find(1)
+ $user->avathar="new_avathar"
+= "new_avathar"
+
+> $user->save();
+= true
+-----------------------------------------------------------
+$user = User::find(2);
+
+$user->update(['avathar' => 'new value from update'])
+
+MASS ASSIGNMENT
+
+protected $fillable = [col1,col2,col3]->accept values only for these columns from user;
+
+protected $guarded = [col1]->do not accept values  for these columns from user;
+
+User::unguard ->To fill non fillable column
+User::reguard ->to reset
+
+if you want to create a new section in a profile 
+
+(resources->views->auth->profile->partials)
+go to partials -> create the section form file and include that in edit.blade.php 
+ @include('profile.partials.user-avathar-form')
+
+to update route use patch in web.php
+----------------------------------------------------------
+(If you want to write our own route create own controller)
+ routes references will come in form action
+ every form should hava a save button Route::patch('/profile/avathar',[AvatharController::class,'update'])->name('avathar.update')
+"route(profile.avathar)"
+Route should be in {{"route(profile.avathar)"}}
+
+public function update()
+{
+         return response()->redirectTo("/profile")->with(["disp"=>"success"]);
+ }
+
+add before corresponding form
+@if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
+
+In the form if you are submitting image there should be form attribute
+enctype = multipart/form-data
+
+form request validation
+
+ php artisan make:request UpdateAvatharRequest   
+
+in UpdateAvatharRequest file under rules function  put the $req->validate condition and then remove from AvatharController.
+
+In Avathar Contoller file Change the name of the Request in the AvatharController to the name of the RequestController.
+use App\Http\Requests\UpdateAvatharRequest;
+
+--------------------------------------------------------------
+To store file in storage -> config/filesystem
+
+in AvatharController ->update fuction
+ dd($request->file('avathar')->store('avathars'));
+will save the file in storage/avathars directory.
+
+to save to local host
+ auth()->user()->update(['avathar'=>'test']);
+        dd(auth()->user());
+
+ $path =$request->file('avathar')->store('avathars','public');
+
+ auth()->user()->update(['avathar'=> $path]);
+
+Profile Controller will have the variable user & second parameter as an array that what we are sending to that page. 
+
+php artisan storage:link
+-------------------------------------------------------------
+in partials file view..
+
+ <img src = "{{ "/storage/$user->avathar" }}" alt = "user_avathar" />
+
+---------------------------------------------------------------Open-ai
